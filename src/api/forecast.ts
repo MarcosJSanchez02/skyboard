@@ -13,6 +13,8 @@ export function getCurrentWeather(
     longitude: String(longitude),
     current:
       'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code',
+    hourly: 'temperature_2m',
+    forecast_hours: '24',
     timezone: 'auto',
   })
 
