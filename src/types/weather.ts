@@ -7,6 +7,13 @@ export interface CurrentWeather {
   weather_code: number
 }
 
+export interface DailyWeather {
+  time: string[]
+  weather_code: number[]
+  temperature_2m_max: number[]
+  temperature_2m_min: number[]
+}
+
 export interface ForecastResponse {
   latitude: number
   longitude: number
@@ -15,6 +22,7 @@ export interface ForecastResponse {
     time: string[]
     temperature_2m: number[]
   }
+  daily: DailyWeather
 }
 
 export interface GeocodingResult {

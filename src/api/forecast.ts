@@ -15,6 +15,8 @@ export function getCurrentWeather(
       'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code',
     hourly: 'temperature_2m',
     forecast_hours: '24',
+    daily: 'weather_code,temperature_2m_max,temperature_2m_min',
+    forecast_days: '7',
     timezone: 'auto',
   })
 
