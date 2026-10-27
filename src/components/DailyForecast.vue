@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { useSettingsStore } from '../stores/settings';
 import type { DailyWeather } from '../types/weather';
+import { convertTemp } from '../utils/formatters';
 import { describeWeather } from '../utils/weatherCodes';
 
 defineProps<{ daily: DailyWeather }>()
+
+const settings = useSettingsStore()
 
 function dayName(date: string, index: number) {
   if (index === 0) return 'Hoy'
@@ -21,8 +25,12 @@ function dayName(date: string, index: number) {
       <p class="my-1 text-3xl" :title="describeWeather(daily.weather_code[i]!).label">
         {{ describeWeather(daily.weather_code[i]!).icon }}
       </p>
-      <p class="font-semibold">{{ Math.round(daily.temperature_2m_max[i]!) }}°</p>
-      <p class="text-sm text-slate-400">{{ Math.round(daily.temperature_2m_min[i]!) }}°</p>
+      <p class="font-semibold">
+        {{ Math.round(convertTemp(daily.temperature_2m_max[i]!, settings.unit)) }}°
+      </p>
+      <p class="text-sm text-slate-400">
+        {{ Math.round(convertTemp(daily.temperature_2m_min[i]!, settings.unit)) }}°
+      </p>
     </li>
   </ul>
 </template>
