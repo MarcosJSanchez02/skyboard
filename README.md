@@ -16,6 +16,9 @@ Dashboard del clima construido con Vue 3 y TypeScript. Busca cualquier ciudad y 
 - Selector de unidades (°C · km/h / °F · mph) que recuerda tu elección
 - Modo claro/oscuro, con el tema del sistema como valor inicial
 - Diseño responsive y estados de carga y error
+- Ciudades favoritas que se guardan en el navegador
+- Botón "Usar mi ubicación" con manejo de permiso denegado y errores
+- Tests unitarios con Vitest (conversión de unidades y stores de Pinia)
 
 ## Stack
 
@@ -29,6 +32,7 @@ Dashboard del clima construido con Vue 3 y TypeScript. Busca cualquier ciudad y 
 | Build      | Vite                                                |
 | Datos      | [Open-Meteo](https://open-meteo.com/) (sin API key) |
 | Despliegue | Vercel                                              |
+| Tests      | Vitest + jsdom                                      |
 
 ## Decisiones técnicas
 
@@ -57,16 +61,16 @@ git clone https://github.com/TU-USUARIO/skyboard.git
 cd skyboard
 npm install
 npm run dev
+npm test
 ```
 
 No necesita variables de entorno ni claves de API.
 
 ## Próximas mejoras
 
-- [ ] Ciudades favoritas
-- [ ] Geolocalización del navegador
 - [ ] Tests con Vitest
 - [ ] Soporte de idiomas (ES/EN)
+- [ ] Tests de componentes y E2E con Playwright
 
 ## Autor
 
