@@ -2,21 +2,24 @@
 import { computed, onMounted, ref } from 'vue'
 import { getCurrentWeather } from './api/forecast'
 import DailyForecast from './components/DailyForecast.vue'
+import FavoriteCities from './components/FavoriteCities.vue'
 import HourlyChart from './components/HourlyChart.vue'
 import SearchBar from './components/SearchBar.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
 import UnitToggle from './components/UnitToggle.vue'
+import { useFavoritesStore, type FavoriteCity } from './stores/favorites'
 import { useSettingsStore } from './stores/settings'
-import type { CurrentWeather, ForecastResponse, GeocodingResult } from './types/weather'
+import type { CurrentWeather, ForecastResponse } from './types/weather'
 import { convertTemp, convertWind, tempSymbol, windSymbol } from './utils/formatters'
 import { describeWeather } from './utils/weatherCodes'
 
 const settings = useSettingsStore()
+const favorites = useFavoritesStore()
 
 const weather = ref<CurrentWeather | null>(null)
 const hourly = ref<ForecastResponse['hourly'] | null>(null)
 const daily = ref<ForecastResponse['daily'] | null>(null)
-const cityName = ref('Buenos Aires')
+const city = ref<FavoriteCity>({ name: 'Buenos Aires', latitude: -34.61, longitude: -58.38 })
 const loading = ref(true)
 const error = ref('')
 
@@ -26,15 +29,17 @@ const hourlyTemps = computed(() =>
     : [],
 )
 
-async function loadWeather(lat: number, lon: number, name: string) {
+const isFavorite = computed(() => favorites.isFavorite(city.value))
+
+async function loadWeather(next: FavoriteCity) {
   loading.value = true
   error.value = ''
   try {
-    const data = await getCurrentWeather(lat, lon)
+    const data = await getCurrentWeather(next.latitude, next.longitude)
     weather.value = data.current
     hourly.value = data.hourly
     daily.value = data.daily
-    cityName.value = name
+    city.value = next
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'Error desconocido'
   } finally {
@@ -42,11 +47,7 @@ async function loadWeather(lat: number, lon: number, name: string) {
   }
 }
 
-function onSelect(city: GeocodingResult) {
-  loadWeather(city.latitude, city.longitude, city.name)
-}
-
-onMounted(() => loadWeather(-34.61, -58.38, 'Buenos Aires'))
+onMounted(() => loadWeather(city.value))
 </script>
 
 <template>
@@ -58,15 +59,25 @@ onMounted(() => loadWeather(-34.61, -58.38, 'Buenos Aires'))
       <ThemeToggle />
     </header>
 
-    <SearchBar @select="onSelect" />
+    <SearchBar @select="loadWeather" />
+    <FavoriteCities @select="loadWeather" />
     <UnitToggle />
 
     <p v-if="loading">Cargando clima...</p>
     <p v-else-if="error" class="text-red-500 dark:text-red-400">{{ error }}</p>
 
     <template v-else-if="weather && hourly && daily">
-      <div class="rounded-2xl bg-white p-6 text-center shadow-sm dark:bg-slate-800">
-        <p class="text-xl text-slate-600 dark:text-slate-300">{{ cityName }}</p>
+      <div class="relative rounded-2xl bg-white p-6 text-center shadow-sm dark:bg-slate-800">
+        <button
+          class="absolute right-3 top-3 text-2xl transition hover:scale-110"
+          :aria-label="isFavorite ? 'Quitar de favoritas' : 'Agregar a favoritas'"
+          :aria-pressed="isFavorite"
+          @click="favorites.toggle(city)"
+        >
+          {{ isFavorite ? '⭐' : '☆' }}
+        </button>
+
+        <p class="text-xl text-slate-600 dark:text-slate-300">{{ city.name }}</p>
         <p class="text-5xl">{{ describeWeather(weather.weather_code).icon }}</p>
         <p class="text-6xl font-bold">
           {{ convertTemp(weather.temperature_2m, settings.unit) }}{{ tempSymbol(settings.unit) }}
