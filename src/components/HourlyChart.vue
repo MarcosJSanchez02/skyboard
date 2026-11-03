@@ -39,8 +39,8 @@ onMounted(() => {
       maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
-        x: { ticks: { color: '#94a3b8', maxTicksLimit: 8 }, grid: { display: false } },
-        y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(148, 163, 184, 0.15)' } },
+        x: { ticks: { color: '#64748b', maxTicksLimit: 8 }, grid: { display: false } },
+        y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(100, 116, 139, 0.2)' } },
       },
     },
   })

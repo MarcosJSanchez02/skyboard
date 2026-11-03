@@ -19,16 +19,16 @@ function dayName(date: string, index: number) {
     <li
       v-for="(date, i) in daily.time"
       :key="date"
-      class="rounded-xl bg-slate-700/60 p-3 text-center"
+      class="rounded-xl bg-slate-100 p-3 text-center dark:bg-slate-700/60"
     >
-      <p class="text-sm capitalize text-slate-300">{{ dayName(date, i) }}</p>
+      <p class="text-sm capitalize text-slate-600 dark:text-slate-300">{{ dayName(date, i) }}</p>
       <p class="my-1 text-3xl" :title="describeWeather(daily.weather_code[i]!).label">
         {{ describeWeather(daily.weather_code[i]!).icon }}
       </p>
       <p class="font-semibold">
         {{ Math.round(convertTemp(daily.temperature_2m_max[i]!, settings.unit)) }}°
       </p>
-      <p class="text-sm text-slate-400">
+      <p class="text-sm text-slate-500 dark:text-slate-400">
         {{ Math.round(convertTemp(daily.temperature_2m_min[i]!, settings.unit)) }}°
       </p>
     </li>

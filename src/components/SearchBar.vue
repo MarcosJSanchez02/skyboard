@@ -53,22 +53,22 @@ function choose(city: GeocodingResult) {
       type="text"
       placeholder="Buscar ciudad..."
       aria-label="Buscar ciudad"
-      class="w-full rounded-xl bg-slate-800 px-4 py-3 text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-sky-400"
+      class="w-full rounded-xl bg-white px-4 py-3 text-slate-900 placeholder-slate-500 shadow-sm outline-none focus:ring-2 focus:ring-sky-500 dark:bg-slate-800 dark:text-white dark:placeholder-slate-400 dark:focus:ring-sky-400"
     />
 
-    <p v-if="searching" class="mt-2 text-sm text-slate-400">Buscando...</p>
+    <p v-if="searching" class="mt-2 text-sm text-slate-500 dark:text-slate-400">Buscando...</p>
 
     <ul
       v-if="results.length"
-      class="absolute z-10 mt-2 w-full overflow-hidden rounded-xl bg-slate-800 shadow-lg"
+      class="absolute z-10 mt-2 w-full overflow-hidden rounded-xl bg-white shadow-lg dark:bg-slate-800"
     >
       <li v-for="city in results" :key="city.id">
         <button
-          class="w-full px-4 py-3 text-left text-white hover:bg-slate-700"
+          class="w-full px-4 py-3 text-left text-slate-900 hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700"
           @click="choose(city)"
         >
           {{ city.name }}
-          <span class="text-sm text-slate-400">
+          <span class="text-sm text-slate-500 dark:text-slate-400">
             {{ [city.admin1, city.country].filter(Boolean).join(', ') }}
           </span>
         </button>
