@@ -4,6 +4,7 @@ import { getCurrentWeather } from './api/forecast'
 import DailyForecast from './components/DailyForecast.vue'
 import FavoriteCities from './components/FavoriteCities.vue'
 import HourlyChart from './components/HourlyChart.vue'
+import LocateButton from './components/LocateButton.vue'
 import SearchBar from './components/SearchBar.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
 import UnitToggle from './components/UnitToggle.vue'
@@ -60,6 +61,7 @@ onMounted(() => loadWeather(city.value))
     </header>
 
     <SearchBar @select="loadWeather" />
+    <LocateButton @locate="loadWeather" />
     <FavoriteCities @select="loadWeather" />
     <UnitToggle />
 
